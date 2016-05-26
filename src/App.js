@@ -1,10 +1,27 @@
-import React from 'react';
-import Counter from './components/Counter/Counter';
-import './styles/main.scss';
+import React, {Component} from 'react';
+import {Router, browserHistory} from 'react-router'
+import { routes } from './routes'
 
-export default () => (
-  <div className="container">
-    <h1 className="title"> Basic Counter Example</h1>
-    <Counter />
-  </div>
-);
+export default class App extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			activeColor: '#452135'
+		}
+	}
+
+	onDrag(activeColor, c) {
+		this.setState({
+			activeColor
+		})
+	}
+
+	render() {
+		return (
+			<div style={{background: this.state.activeColor}}>
+				<Router history={browserHistory} routes={routes} />
+
+			</div>
+		)
+	}
+}
