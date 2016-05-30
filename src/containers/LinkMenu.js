@@ -1,13 +1,15 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import NavLink from '../components/NavLink'
 
-export default class App extends Component {
+export default class LinkMenu extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			route: window.location.hash.substr(1)
 		}
 	}
+
+
 	componentDidMount() {
 		window.addEventListener('hashchange', () => {
 			this.setState({
@@ -15,6 +17,7 @@ export default class App extends Component {
 			})
 		})
 	}
+
 	render() {
 		return (
 			<div className='container'>
@@ -25,7 +28,7 @@ export default class App extends Component {
 					<li><NavLink to='/presets'>Presets</NavLink></li>
 					<li><NavLink to='/export'>Export</NavLink></li>
 				</ul>
-				{this.props.children}
+					{this.props.children}
 			</div>
 		)
 
