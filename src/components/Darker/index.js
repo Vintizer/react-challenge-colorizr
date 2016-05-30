@@ -70,12 +70,12 @@ export default class Explore extends Component {
 	}
 	
 	render() {
-		const {onClick, activeColor, background, changeBackground, selectAll, removeAll } = this.props
+		const {onClick, activeColor, background, changeBackground, selectAll, removeAll, selectedColors} = this.props
 		const arrColors = this.generateDarkerColors(activeColor);
 		return (
 			<div className='row color-sample-arr' style={{background, padding: '10px'}}>
 				{arrColors.map((color, i)=> {
-					return <ColorSample key={i} color={color} onClick={onClick}/>
+					return <ColorSample key={i} color={color} onClick={onClick} selectedColors = {selectedColors}/>
 				})}
 				<button onClick={changeBackground}>{background === 'white' ? 'Dark': 'Light'} background</button>
 				<button onClick={() => selectAll(arrColors)}>Select all</button>

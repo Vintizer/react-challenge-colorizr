@@ -6,109 +6,116 @@ import Selector from '../components/Selector'
 
 
 export default class Create extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			activeColor: '#DEBAFF',
-			selectedColors: [],
-			backgroundDarker: 'white',
-			backgroundMixer: 'white',
-		}
-	}
+    constructor(props) {
+        super(props);
+        this.state = {
+            activeColor: '#DEBAFF',
+            selectedColors: [],
+            backgroundDarker: 'white',
+            backgroundMixer: 'white',
+        }
+    }
 
-	removeSelected(color) {
-		console.log("removeSelected ", color);
-	}
+    removeSelected(color) {
+        console.log("removeSelected ", color);
+    }
 
-	clickColor(e) {
-		this.addColorToPalette(e.target.style.backgroundColor);
-	}
 
-	changeBackgroundDarker() {
-		if (this.state.backgroundDarker === 'white') {
-			this.setState({
-				backgroundDarker: 'black'
-			})
-		} else {
-			this.setState({
-				backgroundDarker: 'white'
-			})
-		}
-	}
+    changeBackgroundDarker() {
+        if (this.state.backgroundDarker === 'white') {
+            this.setState({
+                backgroundDarker: 'black'
+            })
+        } else {
+            this.setState({
+                backgroundDarker: 'white'
+            })
+        }
+    }
 
-	addColorToPalette(color) {
-		console.log("Inbox color - ",color);
-		let add = true;
-		this.state.selectedColors.map((c)=> {
-			if (c === color) add = false;
-		})
-		if (add) {
-			let selectedColors = this.state.selectedColors.slice();
-			console.log("selectedColors",selectedColors);
-			selectedColors.push(color);
-			console.log("selectedColors",selectedColors);
-			this.setState({
-				selectedColors
-			}, ()=>{console.log("setState selectedColors");})
-		}
-	}
+    removeColorFromPalette(color) {
+        let index;
+        this.state.selectedColors.map((c, i)=> {
+            if (c === color) index = i;
+        })
+        if (index) {
+            let selectedColors = this.state.selectedColors.slice();
+            selectedColors.slice(index, 1);
+            this.setState({
+                selectedColors
+            })
+        }
+    }
+    clickColor(e) {
+        const col = e.target.style.backgroundColor;
+        console.log("col",col);
+        console.log("col16 - ",col.toString(16));
 
-	removeColorFromPalette(color) {
-		let index;
-		this.state.selectedColors.map((c,i)=> {
-			if (c === color) index = i;
-		})
-		if (index) {
-			let selectedColors = this.state.selectedColors.slice();
-			selectedColors.slice(index, 1);
-			this.setState({
-				selectedColors
-			})
-		}
-	}
+        let res = this.state.selectedColors.slice();
+        if (res.length === 10) {
+            console.log("!10", col);
+            res = res.slice(1,9);
+            res.push(col);
+            this.setState({
+                selectedColors: res
+            })
+        }
+    }
 
-	selectAll(arr) {
-		arr.map((col)=> {
-			this.addColorToPalette(col);
-		})
-	}
+    addColor(arr) {
+        console.log("arr",arr);
 
-	removeAll(arr) {
-		arr.map((col)=> {
-			this.removeColorFromPalette(col);
-		})
-	}
+        arr.map((col)=> {
+            if (res.indexOf(col) === -1) {
+                res.push(col);
+            }
+        })
+        return res
+    }
 
-	changeBackgroundMixer() {
-		if (this.state.backgroundMixer === 'white') {
-			this.setState({
-				backgroundMixer: 'black'
-			})
-		} else {
-			this.setState({
-				backgroundMixer: 'white'
-			})
-		}
-	}
+    selectAll(arr) {
+        this.setState({
+            selectedColors : arr
+        })
+    }
 
-	onDrag(activeColor, c) {
-		this.setState({
-			activeColor
-		})
-	}
+    removeAll(arr) {
+        arr.map((col)=> {
+            this.removeColorFromPalette(col);
+        })
+    }
 
-	render() {
-		return (
-			<div className='row' style={{background: this.state.activeColor}}>
-				<h2 className='col-md-12'>Choose your color, now your color - {this.state.activeColor}</h2>
-				<ColorPicker color={this.state.activeColor} onDrag={this.onDrag.bind(this)}/>
-				<Selector colors={this.state.selectedColors} removeSelected={this.removeSelected.bind(this)}/>
-				<Darker onClick={this.clickColor.bind(this)} activeColor={this.state.activeColor}
-						changeBackground={this.changeBackgroundDarker.bind(this)}
-						background={this.state.backgroundDarker} selectAll={this.selectAll.bind(this)}
-						removeAll={this.removeAll.bind(this)}/>
-				<Mixer changeBackground={this.changeBackgroundMixer.bind(this)}/>
-			</div>
-		)
-	}
+    changeBackgroundMixer() {
+        if (this.state.backgroundMixer === 'white') {
+            this.setState({
+                backgroundMixer: 'black'
+            })
+        } else {
+            this.setState({
+                backgroundMixer: 'white'
+            })
+        }
+    }
+
+    onDrag(activeColor, c) {
+        this.setState({
+            activeColor
+        })
+    }
+
+    render() {
+        return (
+            <div className='row' style={{background: this.state.activeColor}}>
+                <h2 className='col-md-12'>Choose your color, now your color - {this.state.activeColor}</h2>
+                <ColorPicker color={this.state.activeColor} onDrag={this.onDrag.bind(this)}/>
+                <Selector colors={this.state.selectedColors} removeSelected={this.removeSelected.bind(this)}/>
+                <Darker selectedColors = {this.state.selectedColors} 
+                        onClick={this.clickColor.bind(this)} activeColor={this.state.activeColor}
+                        changeBackground={this.changeBackgroundDarker.bind(this)}
+                        background={this.state.backgroundDarker} selectAll={this.selectAll.bind(this)}
+                        removeAll={this.removeAll.bind(this)}/>
+                <Mixer changeBackground={this.changeBackgroundMixer.bind(this)}/>
+            </div>
+        )
+    }
 }

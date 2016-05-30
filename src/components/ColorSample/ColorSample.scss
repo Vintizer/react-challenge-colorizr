@@ -2,4 +2,35 @@
   width: 100px;
   height: 45px;
   margin: 10px;
+  position: relative;
+}
+.color-sample:hover:before {
+  position: absolute;
+  top: 10%;
+  left: 40%;
+  content: "+";
+  font-family:'Arial Black';
+  font-size:26px;
+  font-weight:bold;
+  color:#fff;
+
+}
+.palitra.color-sample:hover:before {
+  height: 0;
+  width: 0;
+  position: absolute;
+  top: 10%;
+  left: 40%;
+  border: none;
+  content: "\d7";
+}
+.palitra:before {
+  position: absolute;
+  top: 10%;
+  left: 40%;
+  content: "\d7";
+  font-family:'Arial Black';
+  font-size:26px;
+  font-weight:bold;
+  color:#fff;
 }
