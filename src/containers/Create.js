@@ -21,7 +21,7 @@ export default class Create extends Component {
 	}
 
 	clickColor(e) {
-		console.log("removeSelected ", e.target.style.backgroundColor);
+		this.addColorToPalette(e.target.style.backgroundColor);
 	}
 
 	changeBackgroundDarker() {
@@ -36,15 +36,59 @@ export default class Create extends Component {
 		}
 	}
 
-	selectAll(arr) {
-		
+	addColorToPalette(color) {
+		console.log("Inbox color - ",color);
+		let add = true;
+		this.state.selectedColors.map((c)=> {
+			if (c === color) add = false;
+		})
+		if (add) {
+			let selectedColors = this.state.selectedColors.slice();
+			console.log("selectedColors",selectedColors);
+			selectedColors.push(color);
+			console.log("selectedColors",selectedColors);
+			this.setState({
+				selectedColors
+			}, ()=>{console.log("setState selectedColors");})
+		}
 	}
+
+	removeColorFromPalette(color) {
+		let index;
+		this.state.selectedColors.map((c,i)=> {
+			if (c === color) index = i;
+		})
+		if (index) {
+			let selectedColors = this.state.selectedColors.slice();
+			selectedColors.slice(index, 1);
+			this.setState({
+				selectedColors
+			})
+		}
+	}
+
+	selectAll(arr) {
+		arr.map((col)=> {
+			this.addColorToPalette(col);
+		})
+	}
+
 	removeAll(arr) {
-		console.log("removeAll", arr);
+		arr.map((col)=> {
+			this.removeColorFromPalette(col);
+		})
 	}
 
 	changeBackgroundMixer() {
-
+		if (this.state.backgroundMixer === 'white') {
+			this.setState({
+				backgroundMixer: 'black'
+			})
+		} else {
+			this.setState({
+				backgroundMixer: 'white'
+			})
+		}
 	}
 
 	onDrag(activeColor, c) {
@@ -63,7 +107,7 @@ export default class Create extends Component {
 						changeBackground={this.changeBackgroundDarker.bind(this)}
 						background={this.state.backgroundDarker} selectAll={this.selectAll.bind(this)}
 						removeAll={this.removeAll.bind(this)}/>
-				<Mixer />
+				<Mixer changeBackground={this.changeBackgroundMixer.bind(this)}/>
 			</div>
 		)
 	}
